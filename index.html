@@ -37,6 +37,8 @@
         justify-content: center;
         align-items: center;
 
+        background: #f2f4f7;
+
     }
 
     .loginBox {
@@ -61,6 +63,7 @@
     .loginBox h1 {
 
         font-size: 24px;
+        margin-top: 0;
         margin-bottom: 10px;
 
     }
@@ -85,6 +88,14 @@
         border-radius: 6px;
 
         margin-bottom: 15px;
+
+        outline: none;
+
+    }
+
+    input:focus {
+
+        border-color: #007ac2;
 
     }
 
@@ -137,6 +148,8 @@
         width: 100vw;
         height: 100vh;
 
+        overflow: hidden;
+
     }
 
     iframe {
@@ -145,6 +158,8 @@
         height: 100%;
 
         border: none;
+
+        display: block;
 
     }
 
@@ -176,9 +191,13 @@
             type="password"
             id="password"
             placeholder="Contraseña"
+            autocomplete="off"
         >
 
-        <button onclick="validarClave()">
+        <button
+            type="button"
+            onclick="validarClave()"
+        >
             INGRESAR
         </button>
 
@@ -198,7 +217,9 @@
     <iframe
         id="experienceFrame"
         src=""
-        allowfullscreen>
+        allowfullscreen
+        loading="eager"
+    >
     </iframe>
 
 </div>
@@ -212,7 +233,7 @@
 
 
 /*
-   CAMBIA ESTA CONTRASEÑA
+   CONTRASEÑA
 */
 
 const CLAVE_CORRECTA =
@@ -220,13 +241,11 @@ const CLAVE_CORRECTA =
 
 
 /*
-   PEGA AQUÍ TU ENLACE
-   DE EXPERIENCE BUILDER
+   URL CORRECTA DE EXPERIENCE BUILDER
 */
 
 const EXPERIENCE_URL =
-    "https://experience.arcgis.com/fdaa0f45b2a642059b6ec985e53e8f85/";
-
+    "https://experience.arcgis.com/experience/fdaa0f45b2a642059b6ec985e53e8f85/";
 
 
 /* =====================================================
@@ -235,66 +254,87 @@ const EXPERIENCE_URL =
 
 function validarClave() {
 
+    const inputPassword =
+        document.getElementById("password");
+
     const clave =
-        document
-        .getElementById("password")
-        .value;
+        inputPassword.value;
 
     const mensaje =
-        document
-        .getElementById("mensaje");
+        document.getElementById("mensaje");
+
+    const loginScreen =
+        document.getElementById("loginScreen");
+
+    const experienceContainer =
+        document.getElementById("experienceContainer");
+
+    const experienceFrame =
+        document.getElementById("experienceFrame");
 
 
     if (clave === CLAVE_CORRECTA) {
 
         mensaje.innerHTML = "";
 
-        document
-        .getElementById("loginScreen")
-        .style.display = "none";
+        loginScreen.style.display =
+            "none";
 
-        document
-        .getElementById("experienceContainer")
-        .style.display = "block";
+        experienceContainer.style.display =
+            "block";
 
-
-        /*
-        El Experience solamente
-        se carga después de colocar
-        la contraseña correcta.
-        */
-
-        document
-        .getElementById("experienceFrame")
-        .src = EXPERIENCE_URL;
-
+        experienceFrame.src =
+            EXPERIENCE_URL;
 
     } else {
 
         mensaje.innerHTML =
             "Contraseña incorrecta.";
 
+        inputPassword.value =
+            "";
+
+        inputPassword.focus();
+
     }
 
 }
 
 
-
 /* =====================================================
-   ENTER PARA INGRESAR
+   PERMITIR INGRESAR CON ENTER
    ===================================================== */
 
 document
 .getElementById("password")
 .addEventListener(
-    "keypress",
+    "keydown",
     function(event) {
 
         if (event.key === "Enter") {
 
+            event.preventDefault();
+
             validarClave();
 
         }
+
+    }
+);
+
+
+/* =====================================================
+   COLOCAR EL CURSOR EN CONTRASEÑA
+   AL ABRIR LA PÁGINA
+   ===================================================== */
+
+window.addEventListener(
+    "load",
+    function() {
+
+        document
+        .getElementById("password")
+        .focus();
 
     }
 );
