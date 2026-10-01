@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Visualizador Tamizaje Integral</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f2f4f7;
+    }
+
+    /* ==========================
+       PANTALLA DE ACCESO
+       ========================== */
+
+    #loginScreen {
+
+        width: 100vw;
+        height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .loginBox {
+
+        width: 90%;
+        max-width: 420px;
+
+        background: white;
+
+        padding: 40px;
+
+        border-radius: 12px;
+
+        box-shadow:
+            0 4px 18px
+            rgba(0,0,0,0.15);
+
+        text-align: center;
+
+    }
+
+    .loginBox h1 {
+
+        font-size: 24px;
+        margin-bottom: 10px;
+
+    }
+
+    .loginBox p {
+
+        color: #666;
+        margin-bottom: 25px;
+
+    }
+
+    input {
+
+        width: 100%;
+
+        padding: 14px;
+
+        font-size: 16px;
+
+        border: 1px solid #ccc;
+
+        border-radius: 6px;
+
+        margin-bottom: 15px;
+
+    }
+
+    button {
+
+        width: 100%;
+
+        padding: 14px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        font-size: 16px;
+
+        cursor: pointer;
+
+        background: #007ac2;
+
+        color: white;
+
+    }
+
+    button:hover {
+
+        background: #005f95;
+
+    }
+
+    #mensaje {
+
+        margin-top: 15px;
+
+        color: #c62828;
+
+        font-weight: bold;
+
+        min-height: 20px;
+
+    }
+
+    /* ==========================
+       EXPERIENCE BUILDER
+       ========================== */
+
+    #experienceContainer {
+
+        display: none;
+
+        width: 100vw;
+        height: 100vh;
+
+    }
+
+    iframe {
+
+        width: 100%;
+        height: 100%;
+
+        border: none;
+
+    }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================
+     PANTALLA DE CONTRASEÑA
+     ========================== -->
+
+<div id="loginScreen">
+
+    <div class="loginBox">
+
+        <h1>
+            Visualizador Tamizaje Integral
+        </h1>
+
+        <p>
+            Ingrese la contraseña para acceder al sistema
+        </p>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+        >
+
+        <button onclick="validarClave()">
+            INGRESAR
+        </button>
+
+        <div id="mensaje"></div>
+
+    </div>
+
+</div>
+
+
+<!-- ==========================
+     EXPERIENCE BUILDER
+     ========================== -->
+
+<div id="experienceContainer">
+
+    <iframe
+        id="experienceFrame"
+        src=""
+        allowfullscreen>
+    </iframe>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   CONFIGURACIÓN
+   ===================================================== */
+
+
+/*
+   CAMBIA ESTA CONTRASEÑA
+*/
+
+const CLAVE_CORRECTA =
+    "Salud2026";
+
+
+/*
+   PEGA AQUÍ TU ENLACE
+   DE EXPERIENCE BUILDER
+*/
+
+const EXPERIENCE_URL =
+    "https://experience.arcgis.com/fdaa0f45b2a642059b6ec985e53e8f85/";
+
+
+
+/* =====================================================
+   VALIDAR CONTRASEÑA
+   ===================================================== */
+
+function validarClave() {
+
+    const clave =
+        document
+        .getElementById("password")
+        .value;
+
+    const mensaje =
+        document
+        .getElementById("mensaje");
+
+
+    if (clave === CLAVE_CORRECTA) {
+
+        mensaje.innerHTML = "";
+
+        document
+        .getElementById("loginScreen")
+        .style.display = "none";
+
+        document
+        .getElementById("experienceContainer")
+        .style.display = "block";
+
+
+        /*
+        El Experience solamente
+        se carga después de colocar
+        la contraseña correcta.
+        */
+
+        document
+        .getElementById("experienceFrame")
+        .src = EXPERIENCE_URL;
+
+
+    } else {
+
+        mensaje.innerHTML =
+            "Contraseña incorrecta.";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   ENTER PARA INGRESAR
+   ===================================================== */
+
+document
+.getElementById("password")
+.addEventListener(
+    "keypress",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            validarClave();
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
